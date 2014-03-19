@@ -14,18 +14,12 @@
 session_start();
 $wallets = array();
 
-$wallets['wallet 1'] = array("user" => "bitcoinrpc",  
-            "pass" =>   "password",      
-            "host" =>   "hostname",     
-            "port" =>   8332,
-	    "protocol" => "https");            
-/*
-$wallets['wallet 2'] = array("user" => "username",  
-            "pass" =>   "password",      
-            "host" =>   "localhost",     
-            "port" =>   5000,
-	    "protocol" => "https");            
-*/
+$wallets['wallet 1'] = array(
+			"user"		=> "bitcoin",  
+            "pass" 		=> "<same password as 'rpcpassword' in bitcoin.conf>",      
+            "host" 		=> "localhost",     
+            "port" 		=> <same port as 'rpcport' in bitcoin.conf>,
+		    "protocol"	=> "http");            
 
 if (isset($_POST['currentWallet']))
 	$_SESSION['currentWallet'] = $_POST['currentWallet'];
