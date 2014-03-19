@@ -47,6 +47,26 @@ Require user <one or more usernames as defined in 'passwords'>
 The 'passwords' file should be somewhere not web accessible.
 It can be generated using the apache utility 'htpasswd'.
 
+Automatic back-up of the wallet(s) is not part of this WebUI but can be easily implemented with a script.
+Example for Linux and to be executed regularly as cron job:
+walletbackup.sh (e.g. put in /usr/sbin)
+
+#!/bin/sh
+# Bitcoind Wallet backup and email script
+# Uses bitcoin-cli and scp to send the file
+#
+IFS=
+
+walletname='wallet_'`date -u +%Y%m%d%H%M`'.dat'
+localpath='/tmp/'${walletname}
+remotepath='/path/to/'${walletname}
+bitcoin-cli -conf=/etc/bitcoin/bitcoin.conf backupwallet ${localpath}
+scp -P <ssh port number> -i //etc/ssh/ssh_host_rsa_key ${localpath} <user>@<FQDN>:${remotepath} && rm ${localpath}
+exit
+###
+This will send the backup securely to a computer of choice on the internet.
+Prepare the ssh server to accept authentication per certificate and introduce the rsa key of the host with bitcoind into the authorized_keys file of the server that gets the backup sent.
+
 wwortel accepts donations!
 BTC address: 1LkzWBvy847UNvAcJHjMJJbpHcNY8VnTL
 
