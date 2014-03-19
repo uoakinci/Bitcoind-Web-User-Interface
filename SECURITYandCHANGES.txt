@@ -1,0 +1,55 @@
+wwortel March 2014
+Modifications to '+Coin WebUI'
+
++ removed 2 decimal rounding in calculations and introduced 2 decimal text formatting
++ introduced euro
++ replaced exchange rate source; now is blockchain.info
++ put Daemon info on separate tab
++ make Tabs highlighted according to chosen page
++ clarified Balance wordings
++ make "" account indeed show as "" rather than nothing
++ introduce move command to move funds between accounts in a wallet
++ check on sufficient funds before sending or moving
++ replaced 'isset' checks by value checks because POST can set values without actual contents
+
+SECURITY NOTES !!!!!
+The choice of http protocol in the example 'config.php' assumes that the webserver, e.g. apache2,
+that will serve this WebUI to the Internet has https capability and is running on the same host or on a LAN as is the bitcoind daemon.
+I.e. the RPC communication web server <> bitcoind daemon is not open to the Internet and limited to localhost 127.0.0.1. 
+The use of https via Internet to use this WebUI is essential because wallet passwords and WebUI authentication information will have to be sent via the Internet!
+
+This WebUI should not be http accessible and http calls to the subdirectory that holds this Coin WebUI package  
+need to be redirected to https service, using the web server's directives.
+Then Conditional Access needs to be installed to have access to the WebUI.
+Example directives for Apache2; the subdirectory where Coin WebUI resides is called 'coinmaster' in this example:
+
+In the //etc/apache2/sites-available/<Your FQDN for the http site>
+
+### Coinmaster
+Redirect /coinmaster https://Your_FQDN/coinmaster	# so any call getting here via http gets redirected
+<Directory /path/to/where/webcontent/coinmaster>
+Order allow,deny
+Deny from all										# close this directory anyway
+</Directory> 
+### end Coinmaster
+
+In the //etc/apache2/sites-available/<Your FQDN for the https site>
+
+### Coinmaster        
+<Directory /path/to/where/webcontent/coinmaster>
+AuthType Basic
+AuthName "Bitcoin Daemon & Wallet +Coin WebUI"
+AuthBasicProvider file								# use an encrypted 'passwords' file
+AuthUserFile /path/to/where/passwords
+Require user <one or more usernames as defined in 'passwords'> 
+</Directory>
+### end Coinmaster
+The 'passwords' file should be somewhere not web accessible.
+It can be generated using the apache utility 'htpasswd'.
+
+wwortel accepts donations!
+BTC address: 1LkzWBvy847UNvAcJHjMJJbpHcNY8VnTL
+
+
+
+
