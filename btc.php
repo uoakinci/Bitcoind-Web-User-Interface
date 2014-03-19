@@ -6,19 +6,58 @@
  * @package +Coin - Bitcoin & forks Web Interface
  */
 ini_set("display_errors", false);
+$pageid = 3;
 include ("header.php");
 $trans = $nmc->listtransactions('*', 100);
 $x = array_reverse($trans);
-$bal = $nmc->getbalance("*", 6);
-$bal3 = $nmc->getbalance("*", 0);
-$bal2 = $bal - $bal3;
-echo "<div class='content'>
-<div class='span5'>
-<h1>Current Balance: <font color='green'>{$bal}</font></h1>
-<h2>Unconfirmed Balance: <font color='red'>{$bal2}</font></h2>
-</div><div class='span5'><a href='?orphan=1'>View Orphans</a><br /><a href='btc.php'>Go back</a></div>
-<table class='table-striped table-bordered table'>
-<thead><tr><th>Method</th><th>Address</th><th>Name</th><th>Account</th><th>Amount</th><th>Confirmations</th><th>Time</th></tr></thead>";
+$bal = $nmc->getbalance("*", 6);	// confirmed balance of wallet 
+$bal3 = $nmc->getbalance("*", 0);	// unconfirmed balance of wallet
+$bal2 = $bal - $bal3;				// unconfirmed transactions underway
+$pbal = number_format($bal,8);
+$pbal2 = number_format($bal2,8);
+$pbal3 = number_format($bal3,8);
+echo "
+<div class='content'>
+	<div class='span5'>
+		<h3>Confirmed Balance: <font color='green'>{$pbal} BTC</font></h3>
+		<h4>Unconfirmed Balance: <font color='red'>{$pbal3} BTC</font></h4>
+		<h4>Awaiting Confirmation: <font color='red'>{$pbal2} BTC</font></h4>
+	</div>
+	<div class='span5'>
+		<a href='?orphan=1'>
+			View Orphans
+		</a><br>
+		<a href='btc.php'>
+			Go back
+		</a>
+	</div>
+	<table class='table-striped table-bordered table'>
+		<thead>
+		<tr>
+			<th>
+				Method
+			</th>
+			<th>
+				Address
+			</th>
+			<th>
+				Name
+			</th>
+			<th>
+				Account
+			</th>
+			<th>
+				Amount
+			</th>
+			<th>
+				Confirmations
+			</th>
+			<th>
+				Time
+			</th>
+		</tr>
+		</thead>
+";
 
 // Load address book
 $addresses_arr = array();
@@ -47,27 +86,87 @@ foreach ($x as $x)
 	if (!isset($_POST['orphan']))
 	{
 		$date = date(DATE_RFC822, $x['time']);
-        
-		echo "<tr>";
-        echo "<tr>";
-        echo "<td>" . ucfirst($x['category']) . "</td>";
+       	echo "
+       	<tr>
+       	<tr>
+       		<td>
+       			" . ucfirst($x['category']) . "
+       		</td>
+       	";
     	if (isset($x['address']))
-    		echo "<td>{$x['address']}</td><td>{$addresses_arr[$x['address']]}</td><td>{$x['account']}</td>";
+    	{
+    		echo "
+    		<td>
+    			{$x['address']}
+    		</td>
+    		<td>
+    			{$addresses_arr[$x['address']]}
+    		</td>
+    		<td>
+    			\"{$x['account']}\"
+    		</td>
+    		";
+    	}
     	else
-            echo "<td style='text-align: center'>Generated</td><td>N/A</td><td>N/A</td>";
-    	
-    	
-        echo "<td><font color='{$coloramount}'>{$x['amount']}</font></td><td><font color='{$colorconfirms}'>{$x['confirmations']}</font></td><td>{$date}</td></tr>";
-	} else
+    	{
+            echo "
+            <td style='text-align: center'>
+            	Generated
+            </td>
+            <td>
+            	N/A
+            </td>
+            <td>
+            	N/A
+            </td>
+            ";
+    	}    	
+		echo "
+			<td>
+				<font color='{$coloramount}'>
+					{$x['amount']}
+				</font>
+			</td>
+			<td>
+				<font color='{$colorconfirms}'>
+					{$x['confirmations']}
+				</font>
+			</td>
+			<td>
+				{$date}
+			</td>
+		</tr>";
+	}
+	else
 	{
 		$date = date(DATE_RFC822, $x['time']);
 		if ($x['category'] == "orphan")
 		{
-			echo "<tr><td>{$x['account']}</td><td>{$x['amount']}</td><td>{$x['confirmations']}</td><td>{$x['category']}</td><td>{$date}</td></tr>";
+			echo "
+		<tr>
+			<td>
+				{$x['account']}
+			</td>
+			<td>
+				{$x['amount']}
+			</td>
+			<td>
+				{$x['confirmations']}
+			</td>
+			<td>
+				{$x['category']}
+			</td>
+			<td>
+				{$date}
+			</td>
+		</tr>
+			";
 		}
 	}
 }
-echo "</table>";
+echo "
+	</table>
+";
 //print_r($x);   
 include("footer.php");
 ?>
