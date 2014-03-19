@@ -3,9 +3,9 @@ Modifications to '+Coin WebUI'
 
 + removed 2 decimal rounding in calculations and introduced 2 decimal text formatting
 + introduced euro
-+ replaced exchange rate source; now is blockchain.info
++ replaced exchange rate source; now is btc-e.com
 + put Daemon info on separate tab
-+ make Tabs highlighted according to chosen page
++ make page Tabs in header highlighted according to chosen page
 + clarified Balance wordings
 + make "" account indeed show as "" rather than nothing
 + introduce move command to move funds between accounts in a wallet
@@ -21,7 +21,7 @@ The use of https via Internet to use this WebUI is essential because wallet pass
 This WebUI should not be http accessible and http calls to the subdirectory that holds this Coin WebUI package  
 need to be redirected to https service, using the web server's directives.
 Then Conditional Access needs to be installed to have access to the WebUI.
-Example directives for Apache2; the subdirectory where Coin WebUI resides is called 'coinmaster' in this example:
+Example directives for Apache2; the subdirectory where BitcoindWebUI resides is called 'coinmaster' in this example:
 
 In the //etc/apache2/sites-available/<Your FQDN for the http site>
 
