@@ -8,7 +8,8 @@
  * This is the config file for +Coin
  * You MUST add your daemon host information to this
  * file, or it won't work.
- * 
+ * wwortel 3/2014: DO READ SECURITYandCHANGES.txt
+ * Communications via this WebUI need to be secured !!!!!!!
  */
 
 session_start();
