@@ -45,24 +45,39 @@ You can obtain the RPC Information from:
 **Windows**
 
    - %appdata%\Bitcoin\bitcoin.conf
-   - %appdata%\Litecoin\litecoin.conf
-   - %appdata%\Namecoin\bitcoin.conf
 
 **Linux**
 
    - ~/.bitcoin/bitcoin.conf
-   - ~/.litecoin/litecoin.conf
-   - ~/.namecoin/bitcoin.conf
-
+ 
 **OSX**
 
    - ~/Library/Application Support/Bitcoin/bitcoin.conf
-   - ~/Library/Application Support/Litecoin/litecoin.conf
-   - ~/Library/Application Support/Namecoin/bitcoin.conf
 
-Note: Start the RPC server: open Bitcoin-Qt.app --args -server
+wwortel notes:
+* this WebUI is geared to the terminology and exchange rate addresses for Bitcoin currency but can be edited to serve other *coin currencies. The Qt graphical interface does not need to be present.
+E.g. under Linux the presence and running of bitcoind suffices. 
 
-Note: Do read the file 'SECURITYandCHANGES.txt' !!!!
+* Do read the file 'SECURITYandCHANGES.txt' !!!! It is absolutely essential to encrypt and protect the communication between the WebUI and where you are on the internet.
+
+Aotomatic back-up of the wallet(s) is not part of this program but can be easily implemented with a script.
+Example for Linux and to be executed regularly as cron job:
+walletbackup.sh (e.g. put in /usr/sbin)
+
+#!/bin/sh
+# Bitcoind Wallet backup and email script
+# Uses bitcoin-cli and scp to send the file
+#
+IFS=
+
+walletname='wallet_'`date -u +%Y%m%d%H%M`'.dat'
+localpath='/tmp/'${walletname}
+remotepath='/path/to/'${walletname}
+bitcoin-cli -conf=/etc/bitcoin/bitcoin.conf backupwallet ${localpath}
+scp -P <ssh port number> -i //etc/ssh/ssh_host_rsa_key ${localpath} <user>@<FQDN>:${remotepath} && rm ${localpath}
+exit
+###
+This will send the backup securely to a computer of choice on the internet; prepare the ssh server to accept authentication per certificate and introduce the rsa key of the host with bitcoind into the authorized_keys file of the server that gets the backup sent.
 
 DONATIONS
 ---------
