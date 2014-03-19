@@ -18,13 +18,13 @@ $pbal = number_format($bal,8);
 $pbal2 = number_format($bal2,8);
 $pbal3 = number_format($bal3,8);
 // Calculate EUR balance
-$arr = json_decode(file_get_contents("https://blockchain.info/ticker"),true);
-$eur = $arr['EUR']['last'];
+$arr = json_decode(file_get_contents("https://btc-e.com/api/2/btc_eur/ticker"),true);
+$eur = $arr['ticker']['last'];
 $peur = number_format($eur,2);
 $pbaleur = number_format($bal*$eur,2);
-// Calculate USD balance from Weighted Average Price
-$usd = $arr['USD']['last'];
-$pusd = number_format($usd,2);
+// Calculate USD balance
+$arr = json_decode(file_get_contents("https://btc-e.com/api/2/btc_usd/ticker"),true);
+$usd = $arr['ticker']['last'];
 $pbalusd = number_format($bal*$usd,2);
 
 function data_uri($file, $mime) 
