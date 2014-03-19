@@ -1,7 +1,7 @@
 Preview
 -------
-![](http://i.imgur.com/v4Novtf.png)
-(image by [xchrix](https://bitcointalk.org/index.php?action=profile;u=60954))
+![](http://www.dorpstraat.com/coin.png)
+(image by [wwortel])
 
 # [Bitcointalk Thread](https://bitcointalk.org/index.php?topic=67274.0) #
 
@@ -62,6 +62,7 @@ You can obtain the RPC Information from:
 
 Note: Start the RPC server: open Bitcoin-Qt.app --args -server
 
+Note: Do read the file 'SECURITYandCHANGES.txt' !!!!
 
 DONATIONS
 ---------
@@ -70,3 +71,7 @@ Donations are accepted:
 
 - BTC: 1SoMGuYknDgyYypJPVVKE2teHBN4HDAh3
 - LTC: LSomguyTSwcw3hZKFts4P453sPfn4Y5Jzv
+
+wwortel:
+- BTC: 1LkzWBvy847UNvAcJHjMJJbpHcNY8VnTL
+Thank you!
