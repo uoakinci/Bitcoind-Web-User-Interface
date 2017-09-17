@@ -56,7 +56,7 @@ You can obtain the RPC Information from:
 
 wwortel notes:
 * this WebUI is geared to the terminology and exchange rate addresses for Bitcoin currency but can be edited to serve other *coin currencies. The Qt graphical interface does not need to be present.
-E.g. under Linux the presence and running of bitcoind suffices. 
+E.g. under Linux the presence and running of bitcoind suffices and the webserver should support PHP and exclusively serve this application via the https protocol as sensitive information is passed between the user and the bitcoin daemon. 
 
 * Do read the file 'SECURITYandCHANGES.txt' !!!! It is absolutely essential to encrypt and protect the communication between the WebUI and where you are on the internet.
 
