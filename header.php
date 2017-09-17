@@ -16,7 +16,7 @@ include("jsonRPCClient.php");
 */
 $nmc = new jsonRPCClient("{$nmcu['protocol']}://{$nmcu['user']}:{$nmcu['pass']}@{$nmcu['host']}:{$nmcu['port']}", true);
 try {
-	$nmcinfo = $nmc->getinfo();
+	$nmcinfo = $nmc->getnetworkinfo();
 }
 catch(exception $e) {
 	echo "Failed to retrieve data from the daemon, please check your configuration, and ensure that your coin daemon is running:<br>	{$e}";

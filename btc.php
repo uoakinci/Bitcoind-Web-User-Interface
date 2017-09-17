@@ -4,6 +4,7 @@
  * @version 0.01 (ALPHA!)
  * @license PUBLIC DOMAIN http://unlicense.org
  * @package +Coin - Bitcoin & forks Web Interface
+ * Mods by W.Wortel, Sept. 2017
  */
 ini_set("display_errors", false);
 $pageid = 3;
@@ -82,7 +83,10 @@ foreach ($myaddresses as $line)
 foreach ($x as $x)
 {
     if($x['amount'] > 0) { $coloramount = "green"; } else { $coloramount = "red"; }
-    if($x['confirmations'] >= 6) { $colorconfirms = "green"; } else { $colorconfirms = "red"; }
+	if (in_array('confirmations', $x))
+	{
+	    if($x['confirmations'] >= 6) { $colorconfirms = "green"; } else { $colorconfirms = "red"; }
+	}
 	if (!isset($_POST['orphan']))
 	{
 		$date = date(DATE_RFC822, $x['time']);
@@ -93,14 +97,19 @@ foreach ($x as $x)
        			" . ucfirst($x['category']) . "
        		</td>
        	";
-    	if (isset($x['address']))
+    	if (isset($x['address'])) 
     	{
     		echo "
     		<td>
     			{$x['address']}
     		</td>
     		<td>
-    			{$addresses_arr[$x['address']]}
+			";
+			if (in_array($x['address'], $addresses_arr))
+			{
+				echo "{$addresses_arr[$x['address']]}";
+			}
+			echo "
     		</td>
     		<td>
     			\"{$x['account']}\"
@@ -129,7 +138,12 @@ foreach ($x as $x)
 			</td>
 			<td>
 				<font color='{$colorconfirms}'>
-					{$x['confirmations']}
+		";
+		if (isset($x['address']))
+		{
+			echo "{$x['confirmations']}";
+		}
+		echo "
 				</font>
 			</td>
 			<td>

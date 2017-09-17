@@ -4,6 +4,7 @@
 * @version 0.01 (ALPHA!)
 * @license PUBLIC DOMAIN http://unlicense.org
 * @package +Coin - Bitcoin & forks Web Interface
+* Mods by W.Wortel, Sept. 2017
 */
 ini_set("display_errors", false);
 $pageid = 1;
@@ -18,13 +19,13 @@ $pbal = number_format($bal,8);
 $pbal2 = number_format($bal2,8);
 $pbal3 = number_format($bal3,8);
 // Calculate EUR balance
-$arr = json_decode(file_get_contents("https://btc-e.com/api/2/btc_eur/ticker"),true);
-$eur = $arr['ticker']['last'];
+$arr = json_decode(file_get_contents("https://blockchain.info/ticker"),true);
+$eur = $arr['EUR']['last'];
 $peur = number_format($eur,2);
 $pbaleur = number_format($bal*$eur,2);
-// Calculate USD balance
-$arr = json_decode(file_get_contents("https://btc-e.com/api/2/btc_usd/ticker"),true);
-$usd = $arr['ticker']['last'];
+// Calculate USD balance from Weighted Average Price
+$usd = $arr['USD']['last'];
+$pusd = number_format($usd,2);
 $pbalusd = number_format($bal*$usd,2);
 
 function data_uri($file, $mime) 
@@ -44,6 +45,9 @@ $(document).on("click", ".open-SetPassPhrase", function () {
 $(document).on("click", ".open-ChangePassPhrase", function () {	
 	$('#ChangePassPhrase').modal('show');
 });
+$(document).on("click", ".open-ChangeTransactionFee", function () {	
+	$('#ChangeTransactionFee').modal('show');
+});
 </script>
 <?php
 // Show the wallet and exchange rates in BTC, EUR, and USD
@@ -60,11 +64,11 @@ $(document).on("click", ".open-ChangePassPhrase", function () {
 						<br>
 						<h3><div class='eurosymbol'></div></h3>
 						<h3>Confirmed Balance: <font color='green'>{$pbaleur} EUR</font></h3>
-						<h4><a href='http://preev.com/btc/eur'>Trading Price: 1 BTC = </a> <font color='blue'>{$peur} EUR</font></h4>
+						<h4>Trading Price: 1 BTC = <font color='blue'>{$peur} EUR</font></h4>
 						<br>
 						<h3><div class='usdollarsymbol'></div></h3>
 						<h3>Confirmed Balance: <font color='green'>{$pbalusd} USD</font></h3>
-						<h4><a href='http://preev.com/btc/usd'>Trading Price: 1 BTC = </a> <font color='blue'>{$pusd} USD</font></h4>
+						<h4>Trading Price: 1 BTC = <font color='blue'>{$pusd} USD</font></h4>
 						<br>
 						<h3>Send coins:</h3>
 						<form action='send.php' method='POST'>
@@ -80,7 +84,7 @@ $(document).on("click", ".open-ChangePassPhrase", function () {
 	$maxAccount = null;
 	foreach ($addr as $fmaccount => $fmbalance)
 	{
-		if ($balance > $maxBalance)
+		if ($fmbalance > $maxBalance)
 		{
 			$maxBalance = $fmbalance;
 			$maxAccount = $fmaccount;
@@ -170,6 +174,50 @@ $(document).on("click", ".open-ChangePassPhrase", function () {
 							</td>
 						</tr>
 						<tr>
+							<td>Transaction Fee:</td>
+<?php
+	if ( isset($_POST['paytxfee']) )
+	{
+// set the paytxfee; convert from Satoshis/Byte to BTC/kiloByte
+		$paytxfee	   = explode('|',$_POST['paytxfee']);
+		$fee			= ( $paytxfee[1] / 1e5) ;
+		if ($fee != 0)
+		{
+			try
+			{
+				$nmc->settxfee($fee);
+				echo "
+								<div class='alert alert-success'>
+									<button type='button' class='close' data-dismiss='alert'>&times;</button>
+									Transaction Fee successfully changed :-)
+								</div>
+				";
+			}
+			catch(Exception $e)
+			{
+				echo "
+								<div class='alert alert-error'>
+									<button type='button' class='close' data-dismiss='alert'>&times;</button>
+									<b>Error:</b> Something went wrong... Could not set the Transaction Fee :-(<br> {$e}
+								</div>
+				";
+			}
+		}
+	}
+?>
+							<td>
+<?php
+	$wainfo = $nmc->getwalletinfo(); 
+	echo "
+								$wainfo[paytxfee]
+	";
+?>
+							</td>
+							<td>
+								<a href='#ChangeTransactionFee' class='open-ChangeTransactionFee btn btn-tiny'>Change</a>
+							</td>
+						</tr>
+						<tr>
 							<td>Passphrase:</td>
 							<td>
 <?php
@@ -221,24 +269,27 @@ $(document).on("click", ".open-ChangePassPhrase", function () {
 								</div>
 			";
 		}
-	}				
+	}
 	if ($wallet_encrypted)
 	{
 		echo "
 								<div class='input-append'>
 									<input type='password' placeholder='Wallet Passphrase' name='walletpassphrase'> &nbsp; &nbsp;
+							</td>
+							<td>
 									<a href='#ChangePassPhrase' class='open-ChangePassPhrase btn btn-tiny'>Change</a>
 								</div>
+							</td>	
 		";
 	}
 	else 
 	{
 		echo "
 								Wallet un-encrypted &nbsp; &nbsp; <a href='#SetPassPhrase' class='open-SetPassPhrase btn btn-tiny'>Set</a>
+							</td>	
 		";
 	}
 ?>		
-							</td>
 						</tr>
 						<tr>
 							<td></td>
@@ -296,7 +347,7 @@ foreach ($x as $x)
 	";
 	if (isset($x['address']))
 	{
-		if ($addresses_arr[$x['address']])
+		if (in_array($x['address'], $addresses_arr))
 		{
 			$name = $addresses_arr[$x['address']];
 		}
@@ -312,11 +363,11 @@ foreach ($x as $x)
 	}
 	else
 	{
-	   echo "
-	   							<td style='text-align: center'>
-	   								Generated
-	   							</td>
-	   	";
+		echo "
+								<td style='text-align: center'>
+									Generated
+								</td>
+		";
 	}
 	echo "
 								<td>
@@ -340,6 +391,35 @@ foreach ($x as $x)
 			</div><!--/.span12 -->
 		</div><!--/.row -->
 	<form action='index.php' method='POST'>
+<!-- Modal --->
+		<div id="ChangeTransactionFee" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 id="myModalLabel">Change Transaction Fee</h3>
+			</div>
+			<div class="modal-body">
+								<select name='paytxfee'>
+<?php
+// get three options for paytxfee from bitcoinfees.21.co
+	$recommended = json_decode(file_get_contents("https://bitcoinfees.21.co/api/v1/fees/recommended"),true);
+// {"fastestFee":240,"halfHourFee":210,"hourFee":120}
+	foreach ($recommended as $feetype => $fee)
+	{
+		$paytxfee = $feetype.'|'.$fee;
+		echo "
+									<option value='{$paytxfee}' ".($feetype == "halfHourFee" ? " selected='selected' " : "").">
+										\"{$feetype}\" ({$fee})
+									</option>
+		";
+	}
+?>
+								</select>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal">Close</button>
+				<button class="btn btn-primary">Save Changes</button>
+			</div>
+		</div>
 <!-- Modal --->
 		<div id="SetPassPhrase" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-header">

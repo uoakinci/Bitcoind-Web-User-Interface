@@ -12,12 +12,32 @@ echo "<div class='content'>
     		</tr>
     	</thead>
     	<tbody>
-    		 <?php $info = $nmc->getinfo(); ?>
-    		 <?php foreach ($info as $key => $val)
-                   {
-                       if ($val != "")
-                           echo "<tr><td>".$key."</td><td>".$val."</td></tr>";
-                   }
+    		 <?php $nwinfo = $nmc->getnetworkinfo(); ?>
+    		 <?php $wainfo = $nmc->getwalletinfo(); ?>
+    		 <?php $bcinfo = $nmc->getblockchaininfo(); ?>
+    		 <?php $miinfo = $nmc->getmininginfo(); ?>
+    		 <?php $key = "version";
+                   echo "<tr><td>".$key."</td><td>".$nwinfo[$key]."</td></tr>";
+                   $key = "protocolversion";
+                   echo "<tr><td>".$key."</td><td>".$nwinfo[$key]."</td></tr>";
+                   $key = "walletversion";
+                   echo "<tr><td>".$key."</td><td>".$wainfo[$key]."</td></tr>";
+                   $key = "balance";
+                   echo "<tr><td>".$key."</td><td>".$wainfo[$key]."</td></tr>";
+                   $key = "paytxfee";
+                   echo "<tr><td>".$key."</td><td>".$wainfo[$key]."</td></tr>";
+                   $key = "relayfee";
+                   echo "<tr><td>".$key."</td><td>".$nwinfo[$key]."</td></tr>";
+                   $key = "blocks";
+                   echo "<tr><td>".$key."</td><td>".$bcinfo[$key]."</td></tr>";
+                   $key = "timeoffset";
+                   echo "<tr><td>".$key."</td><td>".$nwinfo[$key]."</td></tr>";
+                   $key = "connections";
+                   echo "<tr><td>".$key."</td><td>".$nwinfo[$key]."</td></tr>";
+                   $key = "difficulty";
+                   echo "<tr><td>".$key."</td><td>".$bcinfo[$key]."</td></tr>";
+                   $key = "errors";
+                   echo "<tr><td>".$key."</td><td>".$miinfo[$key]."</td></tr>";
              ?>
     	</tbody>
     </table>

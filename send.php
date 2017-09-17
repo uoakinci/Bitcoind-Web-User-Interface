@@ -5,6 +5,7 @@
  * @version 0.01 (ALPHA!)
  * @license PUBLIC DOMAIN http://unlicense.org
  * @package +Coin - Bitcoin & forks Web Interface
+ * Mods by W.Wortel, Sept. 2017
  */
 $pageid = 6;
 include("header.php");
@@ -84,7 +85,7 @@ echo "
 				( $fmbalance >= $sendamt )
 			)
 		{
-			try
+            try
 			{
 				if ($wallet_encrypted)
 				{
