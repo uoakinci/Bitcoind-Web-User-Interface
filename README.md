@@ -61,9 +61,10 @@ E.g. under Linux the presence and running of bitcoind suffices.
 * Do read the file 'SECURITYandCHANGES.txt' !!!! It is absolutely essential to encrypt and protect the communication between the WebUI and where you are on the internet.
 
 * extensions made: 
-    Euro and USD rates on main page, 
-    Setting of Transaction Fee on basis of expected waiting time until addition to the block chain,
-    Bug corrections (tests added for array indices that when non-existent would raise errors)
+    * Euro and USD rates on main page,
+    * Setting of Transaction Fee on basis of expected waiting time until addition to the block chain,
+    * Bug corrections (tests added for array indices that when non-existent would raise errors),
+    * Alternative daemon info implemetation because of API call 'getinfo' having been deprecated in bitcoind,  
 
 DONATIONS
 ---------
