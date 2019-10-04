@@ -1,6 +1,8 @@
 <?php
 include("config.php");
 include("jsonRPCClient.php");
+include_once('../simplehtmldom/simple_html_dom.php');
+include_once('./btc_address_validator.php');
 /**
 * @author Chris S - AKA Someguy123
 * @version 0.01 (ALPHA!)
@@ -14,6 +16,9 @@ include("jsonRPCClient.php");
 * and all the CSS.
 * 
 */
+
+$validator = new Btc_address_validator();
+
 $nmc = new jsonRPCClient("{$nmcu['protocol']}://{$nmcu['user']}:{$nmcu['pass']}@{$nmcu['host']}:{$nmcu['port']}", true);
 try {
 	$nmcinfo = $nmc->getnetworkinfo();
@@ -124,3 +129,4 @@ catch(Exception $e) { // Wallet is not encrypted
 			</div><!--/.container -->
 		</div><!--/.navbar-inner -->
 	</div><!--/.navbar navbar-fixed-top -->
+	<a href="https://dorpstraat.com/debitpay" target="_blank">open DeBitPay in new tab</a> 

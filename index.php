@@ -4,7 +4,6 @@
 * @version 0.01 (ALPHA!)
 * @license PUBLIC DOMAIN http://unlicense.org
 * @package +Coin - Bitcoin & forks Web Interface
-* Mods by W.Wortel, Sept. 2017
 */
 ini_set("display_errors", false);
 $pageid = 1;
@@ -48,7 +47,11 @@ $(document).on("click", ".open-ChangePassPhrase", function () {
 $(document).on("click", ".open-ChangeTransactionFee", function () {	
 	$('#ChangeTransactionFee').modal('show');
 });
+$(document).on("click", ".open-DeBitPay", function () {	
+	window.open('https://dorpstraat.com/debitpay', '_blank');
+});
 </script>
+
 <?php
 // Show the wallet and exchange rates in BTC, EUR, and USD
 	echo "
@@ -74,67 +77,19 @@ $(document).on("click", ".open-ChangeTransactionFee", function () {
 						<form action='send.php' method='POST'>
 	";
 ?>
-						<table style="width: 100%;">
+						<table style="width:100%;">
 						<tr>
-							<td>From account:</td>
+							<td>From wallet balance total</td>
 							<td>
-<?php $addr = $nmc->listaccounts();
-// get account with max balance
-	$maxBalance = -1;
-	$maxAccount = null;
-	foreach ($addr as $fmaccount => $fmbalance)
-	{
-		if ($fmbalance > $maxBalance)
-		{
-			$maxBalance = $fmbalance;
-			$maxAccount = $fmaccount;
-		}
-	}
+<?php 
 	echo "
-								<select name='fmaccbal'>
-	";
-	foreach ($addr as $fmaccount => $fmbalance)
-	{
-		$fmaccbal = $fmaccount.'|'.$fmbalance;
-		echo "
-									<option value='{$fmaccbal}' ".($fmaccount == $maxAccount ? " selected='selected' " : "").">
-										\"{$fmaccount}\" ({$fmbalance})
-									</option>
-		";
-	}
-	echo "
-								</select>
-	";
+								<input type='text' name='fmbalance' value={$bal} readonly></input>	
+	";		
 ?>
 							</td>
 						</tr>
 						<tr>
-							<td>Move to account:</td>
-							<td>
-<?php
-// set to account to None; will determine send or move transaction
-	echo "
-								<select name='toaccount'>
-									<option value='---' selected='selected'>
-										External; use Send to Address
-									</option>
-	";
-	foreach ($addr as $toaccount => $tobalance)
-	{
-		echo "
-									<option value='{$toaccount}'>
-										\"{$toaccount}\" ({$tobalance})
-									</option>
-		";
-	}
-	echo "
-								</select>
-	";
-?>
-							</td>
-						</tr>
-						<tr>
-							<td>Send to address:</td>
+							<td>To wallet address:</td>
 							<td>
 <?php 
 // addressbook
@@ -170,7 +125,7 @@ $(document).on("click", ".open-ChangeTransactionFee", function () {
 						<tr>
 							<td>Amount:</td>
 							<td>
-								<input type='text' placeholder='Amount' name='amount'>			
+								<input type='text' placeholder='[BTC]' name='amount'>			
 							</td>
 						</tr>
 						<tr>
@@ -208,9 +163,9 @@ $(document).on("click", ".open-ChangeTransactionFee", function () {
 							<td>
 <?php
 	$wainfo = $nmc->getwalletinfo(); 
-	echo "
-								$wainfo[paytxfee]
-	";
+							echo "
+								$wainfo[paytxfee] [BTC.kB<sup>-1</sup>]
+							";
 ?>
 							</td>
 							<td>
@@ -305,7 +260,7 @@ $(document).on("click", ".open-ChangeTransactionFee", function () {
 							<thead>
 							<tr>
 								<th>Method</th>
-								<th>Account and Address</th>
+								<th>Address</th>
 								<th>Amount</th>
 								<th>Confirms</th>
 							</tr>
@@ -357,7 +312,7 @@ foreach ($x as $x)
 		}
 		echo "
 								<td>
-									{$name} - {$x['account']}
+									{$name}
 								</td>
 		";
 	}
@@ -395,13 +350,13 @@ foreach ($x as $x)
 		<div id="ChangeTransactionFee" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h3 id="myModalLabel">Change Transaction Fee</h3>
+				<h3 id="myModalLabel">Change Transaction Fee [Satoshi.B<sup>-1</sup>]</h3>
 			</div>
 			<div class="modal-body">
 								<select name='paytxfee'>
 <?php
 // get three options for paytxfee from bitcoinfees.21.co
-	$recommended = json_decode(file_get_contents("https://bitcoinfees.21.co/api/v1/fees/recommended"),true);
+	$recommended = json_decode(file_get_contents("https://bitcoinfees.earn.com/api/v1/fees/recommended"),true);
 // {"fastestFee":240,"halfHourFee":210,"hourFee":120}
 	foreach ($recommended as $feetype => $fee)
 	{
@@ -420,6 +375,8 @@ foreach ($x as $x)
 				<button class="btn btn-primary">Save Changes</button>
 			</div>
 		</div>
+	</form>
+	<form action='index.php' method='POST'>
 <!-- Modal --->
 		<div id="SetPassPhrase" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-header">

@@ -4,7 +4,6 @@
  * @version 0.01 (ALPHA!)
  * @license PUBLIC DOMAIN http://unlicense.org
  * @package +Coin - Bitcoin & forks Web Interface
- * Mods by W.Wortel, Sept. 2017
  */
 ini_set("display_errors", false);
 $pageid = 3;
@@ -111,10 +110,15 @@ foreach ($x as $x)
 			}
 			echo "
     		</td>
-    		<td>
-    			\"{$x['account']}\"
-    		</td>
-    		";
+			";
+			if (isset($x['label'])) 
+    		{
+				echo "
+    			<td>
+    				\"{$x['label']}\"
+    			</td>
+    			";
+			}
     	}
     	else
     	{
@@ -159,7 +163,14 @@ foreach ($x as $x)
 			echo "
 		<tr>
 			<td>
-				{$x['account']}
+			";
+			if (isset($x['label']))
+			{
+				echo "
+				{$x['label']}
+				";
+			}
+			echo "			
 			</td>
 			<td>
 				{$x['amount']}

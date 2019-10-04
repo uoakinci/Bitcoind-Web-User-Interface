@@ -29,7 +29,7 @@
 			fclose($f);
 		}
 	}
-
+$pageid = 5;
 include ("header.php");
 echo "<div class='content'>
 	<h2>Addressbook</h2>";

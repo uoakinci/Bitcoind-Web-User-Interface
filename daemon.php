@@ -36,7 +36,7 @@ echo "<div class='content'>
                    echo "<tr><td>".$key."</td><td>".$nwinfo[$key]."</td></tr>";
                    $key = "difficulty";
                    echo "<tr><td>".$key."</td><td>".$bcinfo[$key]."</td></tr>";
-                   $key = "errors";
+                   $key = "warnings";
                    echo "<tr><td>".$key."</td><td>".$miinfo[$key]."</td></tr>";
              ?>
     	</tbody>

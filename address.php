@@ -29,7 +29,7 @@ $(document).on("click", ".open-EditAddrDialog", function () {
 </script>
 
 <?php
-if (isset($_POST['addaddr']) && isset($_POST['account']))
+if (isset($_POST['addaddr']))
 {
   $nmc->getnewaddress($_POST['account']);
 }
@@ -59,76 +59,83 @@ if (isset($_POST['AddrName']) && isset($_POST['myAddress']))
 }
 
 
-$addr = $nmc->listaccounts();
-// $addrkeys = array_keys($addr);
+$groupings = $nmc->listaddressgroupings();
 echo "
-<div class='content'>
-	<h2>Select an account to get a list of an addresses</h2>
-		<form action='address.php' method='POST'>
-		<select name='account'>
+		<table >
+		<thead>
+			<tr>
+				<th>Address</th>
+				<th>Unspent</th>
+				<th>Label</th>
+				<th>Purpose</th>
+				<th>Edit</th>
+			</tr>
+		</thead>
+		<tbody>
 ";
-foreach ($addr as $account => $balance)
+foreach ($groupings as $group0 => $member)
 {
-	$selected = "";
-	if (isset($_POST['account']))
+	foreach ($member as $group)
 	{
-	   settype($account, "string");
-       if ($_POST['account'] == $account)
-          $selected = "selected";
-	}
-    echo "
-    		<option value='{$account}' $selected>
-    			\"{$account}\" ({$balance})
-    		</option>
-    ";
-}
-echo "
-		</select>
-		<input class='btn' type='submit' value='View addresses' />
-		<input class='btn' name='addaddr' type='submit' value='Add address' />
-		</form>
-";
+		echo "
+				<tr>
+					<td>
+						" . $group[0] . "
+					</td>
+					<td>
+						" . $group[1] . "
+					</td>
+					<td>
+		";
+		$addr_info	= $nmc->getaddressinfo($group[0]);
+		$labels_ar	= $addr_info["labels"];  /* json label array; name purpose */
+		$this_addr	= $addr_info["address"]; /* validated address */
+		if ( count($labels_ar) > 0 ) { /* check that labels are given */
+			$mem0		= $labels_ar[0];
+			$label_name	= $mem0["name"];
+			$purp		= $mem0["purpose"];
+		}
+		else
+		{
+			$label_name	= "-";
+			$purp		= "-";
+		}
+		if ( count($group) > 2 )
+		{
 
-if (isset($_POST['account']))
-{	
-    $account = $_POST['account'];
-}
-else
-{
-    $account = "";
-}
-echo "
-		<table class='table-striped table-bordered table-condensed table'>
-			<thead>
-				<tr>
-					<th colspan='2'>
-						Addresses for Account \"$account\"
-					</th>
-				</tr>
-			</thead>
-";
-foreach ($nmc->getaddressesbyaccount($account) as $address)
-{
-	$address_label = $myaddress_arr[$address];
-	echo "
-				<tr>
-					<td>
-						" . $address . "
+			echo "
+						" . $group[2] . "
 					</td>
 					<td>
-						" . $address_label . "
+						" . $purp . "
+			";
+		}
+		else
+		{
+			echo "
+						" . "" . "
 					</td>
 					<td>
-						<a data-id='".$address."' data-name='".$address_label."' data-toggle='modal' href='#EditAddrDialog' class='open-EditAddrDialog btn btn-mini'>
+						" . "" . "
+			";
+		}
+		echo "
+					</td>
+					<td>
+						<a data-id='".$this_addr."' data-name='".$label_name."' data-toggle='modal' href='#EditAddrDialog' class='open-EditAddrDialog btn btn-mini'>
 							Edit
 						</a>
 					</td>
-				</tr>";
+				</tr>
+		";
+	}
 }
 echo "
+		</tbody>
 		</table>
 "; 
 ?>
+
 		<form action='address.php' method='POST'>
 <!-- Modal --->
 			<div id="EditAddrDialog" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -155,7 +162,7 @@ echo "
 						</tr>
 					</table>
 					<input type="hidden" name="myAddress" id="myAddress" value="Nothing"/>	
-					<input type="hidden" name="account" id="account" value="<?php echo $account ?>"/>	
+					<input type="hidden" name="label" id="label" value="<?php echo $label_name ?>"/>	
 				</div>
 				<div class="modal-footer">
 					<button class="btn" data-dismiss="modal">
@@ -170,5 +177,6 @@ echo "
 <?php    
 include ("footer.php");
 ?>
+
 
 

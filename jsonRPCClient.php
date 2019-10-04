@@ -61,7 +61,7 @@ class jsonRPCClient {
 	 * @param string $url
 	 * @param boolean $debug
 	 */
-	public function __construct($url,$debug = false) {
+	public function __construct($url, $debug = false) {
 		// server URL
 		$this->url = $url;
 		// proxy
@@ -138,11 +138,6 @@ class jsonRPCClient {
 			$response = json_decode($response,true);
 		} else {
 			throw new Exception('Unable to connect to '.$this->url);
-		}
-		
-		// debug output
-		if ($this->debug) {
-			echo nl2br($debug);
 		}
 		
 		// final checks and return

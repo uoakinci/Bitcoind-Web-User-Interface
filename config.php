@@ -8,19 +8,24 @@
  * This is the config file for +Coin
  * You MUST add your daemon host information to this
  * file, or it won't work.
- * wwortel 3/2014: DO READ SECURITYandCHANGES.txt
- * Communications via this WebUI need to be secured !!!!!!!
+ * 
  */
 
 session_start();
 $wallets = array();
 
-$wallets['wallet 1'] = array(
-		"user"		=> "bitcoin",  
-            	"pass" 		=> "<same password as 'rpcpassword' in bitcoin.conf>",      
-		"host" 		=> "localhost",     
-		"port" 		=> <same port as 'rpcport' in bitcoin.conf>,
-		"protocol"	=> "http");            
+$wallets['wallet 1'] = array("user" => "bitcoin",  
+            "pass" =>   "937DMvmWYGW8cypU5wQLoKL4m9CS63QdetMVWhXUFbdC",      
+            "host" =>   "localhost",     
+            "port" =>   8330,
+	    "protocol" => "http");            
+/*
+$wallets['wallet 2'] = array("user" => "username",  
+            "pass" =>   "password",      
+            "host" =>   "localhost",     
+            "port" =>   5000,
+	    "protocol" => "https");            
+*/
 
 if (isset($_POST['currentWallet']))
 	$_SESSION['currentWallet'] = $_POST['currentWallet'];
