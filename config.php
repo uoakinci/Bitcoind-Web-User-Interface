@@ -15,7 +15,7 @@ session_start();
 $wallets = array();
 
 $wallets['wallet 1'] = array("user" => "bitcoin",  
-            "pass" =>   "937DMvmWYGW8cypU5wQLoKL4m9CS63QdetMVWhXUFbdC",      
+            "pass" =>   "password",      
             "host" =>   "localhost",     
             "port" =>   8330,
 	    "protocol" => "http");            
