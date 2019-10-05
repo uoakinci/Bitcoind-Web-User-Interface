@@ -1,6 +1,6 @@
 Preview
 -------
-![](http://www.dorpstraat.com/coin.png)
+![](http://www.dorpstraat.com/coin2.png)
 (image by [wwortel])
 
 # [Bitcointalk Thread](https://bitcointalk.org/index.php?topic=67274.0) #
