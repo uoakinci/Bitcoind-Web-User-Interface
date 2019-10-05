@@ -64,7 +64,8 @@ E.g. under Linux the presence and running of bitcoind suffices and the webserver
     * Euro and USD rates on main page,
     * Setting of Transaction Fee on basis of expected waiting time until addition to the block chain,
     * Bug corrections (tests added for array indices that when non-existent would raise errors),
-    * Alternative daemon info implemetation because of API call 'getinfo' having been deprecated in bitcoind,  
+    * Alternative daemon info implementation because of API call 'getinfo' having been deprecated in bitcoind,
+    * Link to Debitpay to open in another tab that application to translate bitpay codes to bitcoin addresses.
 
 DONATIONS
 ---------
