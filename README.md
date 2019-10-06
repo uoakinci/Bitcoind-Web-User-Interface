@@ -66,6 +66,7 @@ E.g. under Linux the presence and running of bitcoind suffices and the webserver
     * Bug corrections (tests added for array indices that when non-existent would raise errors),
     * Alternative daemon info implementation because of API call 'getinfo' having been deprecated in bitcoind,
     * Link to Debitpay to open in another tab that application to translate bitpay codes to bitcoin addresses.
+      Adapt the link at the end of 'header.php' to the url where your instance of DeBitpay is found (source elsewhere on github). 
 
 DONATIONS
 ---------
