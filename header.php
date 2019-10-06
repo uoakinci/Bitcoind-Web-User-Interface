@@ -129,4 +129,4 @@ catch(Exception $e) { // Wallet is not encrypted
 			</div><!--/.container -->
 		</div><!--/.navbar-inner -->
 	</div><!--/.navbar navbar-fixed-top -->
-	<a href="https://\<yourdomain url\>/debitpay" target="_blank">open DeBitPay in new tab</a> 
+	<a href="https://<yourdomain url>/debitpay" target="_blank">open DeBitPay in new tab</a> 
