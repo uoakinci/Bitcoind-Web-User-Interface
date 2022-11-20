@@ -39,5 +39,6 @@ else
 }
 
 $nmcu = $wallets[$currentWallet];
+$nmcu['walletName']=$currentWallet;
 
 ?>
