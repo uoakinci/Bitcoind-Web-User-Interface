@@ -1,7 +1,6 @@
 <?php
 include("config.php");
 include("jsonRPCClient.php");
-include_once('../simplehtmldom/simple_html_dom.php');
 include_once('./btc_address_validator.php');
 /**
 * @author Chris S - AKA Someguy123
@@ -19,7 +18,7 @@ include_once('./btc_address_validator.php');
 
 $validator = new Btc_address_validator();
 
-$nmc = new jsonRPCClient("{$nmcu['protocol']}://{$nmcu['user']}:{$nmcu['pass']}@{$nmcu['host']}:{$nmcu['port']}", true);
+$nmc = new jsonRPCClient("{$nmcu['protocol']}://{$nmcu['user']}:{$nmcu['pass']}@{$nmcu['host']}:{$nmcu['port']}/wallets/{$nmcu['walletName']}", true);
 try {
 	$nmcinfo = $nmc->getnetworkinfo();
 }
@@ -118,11 +117,11 @@ catch(Exception $e) { // Wallet is not encrypted
 					</ul>
 				</div><!--/.nav-collapse -->
 				<span style='color: #E4E4E4;'>Select wallet server: &nbsp;</span>
-				<select id='currentWallet' onchange='window.location.href=\"index.php?currentWallet=\"+document.getElementById(\"currentWallet\").value;' style='margin-top: 5px;'>
+				<select id='currentWallet' onchange='window.location.href="index.php?currentWallet="+document.getElementById("currentWallet").value;' style='margin-top: 5px;'>
 <?php
 	foreach ($wallets as $walletName => $walletData)
 		echo "
-					<option id=\"".$walletName."\" ".($currentWallet == $walletName ? "selected" : "").">".$walletName."</option>
+					<option id=\"".$walletName."\" ".($_SESSION['currentWallet'] == $walletName ? "selected" : "").">".$walletName."</option>
 		";
 ?>
 				</select>
