@@ -17,7 +17,7 @@ $wallets = array();
 $wallets['wallet 1'] = array("user" => "bitcoin",  
             "pass" =>   "password",      
             "host" =>   "localhost",     
-            "port" =>   8330,
+            "port" =>   8332,
 	    "protocol" => "http");            
 /*
 $wallets['wallet 2'] = array("user" => "username",  
@@ -30,12 +30,11 @@ $wallets['wallet 2'] = array("user" => "username",
 if (isset($_POST['currentWallet']))
 	$_SESSION['currentWallet'] = $_POST['currentWallet'];
 
-if (isset($_SESSION['currentWallet']))
+if (isset($_SESSION['currentWallet']) && array_key_exists($_SESSION['currentWallet'],$wallets) )
 	$currentWallet = $_SESSION['currentWallet'];
 else
 {
-	$keys = array_keys($wallets);
-	$currentWallet = $keys[0];
+	$currentWallet = array_key_first($wallets);
 	$_SESSION['currentWallet'] = $currentWallet;
 }
 
