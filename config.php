@@ -27,8 +27,8 @@ $wallets['wallet 2'] = array("user" => "username",
 	    "protocol" => "https");            
 */
 
-if (isset($_POST['currentWallet']))
-	$_SESSION['currentWallet'] = $_POST['currentWallet'];
+if (isset($_GET['currentWallet']))
+	$_SESSION['currentWallet'] = $_GET['currentWallet'];
 
 if (isset($_SESSION['currentWallet']) && array_key_exists($_SESSION['currentWallet'],$wallets) )
 	$currentWallet = $_SESSION['currentWallet'];
