@@ -15,11 +15,31 @@ include ("header.php");
 
 
 <?php
-if (isset($_POST['New']))
+if (isset($_GET['NewAddr']))
 {
-  $nmc->getnewaddress($_SESSION['currentWallet']);
+  $nmc->getnewaddress($_GET['NewAddr']);
 }
+echo "
+                <table >
+                <thead>
+                        <tr>
+                                <th>Address</th>
+                                <th>Label</th>
+                        </tr>
+                </thead>
+                <tbody>
+";
 
+$labels = $nmc->listlabels();
+foreach ( $labels as $label)
+{
+        $address_info=$nmc->getaddressesbylabel($label);
+        foreach ( $address_info as $address => $purp)
+        {
+                echo "<tr><td>" . $address ."</td><td>".$label."</td></tr>";
+        }
+}
+echo "</tbody></table>";
 $groupings = $nmc->listaddressgroupings();
 echo "
 		<table >
